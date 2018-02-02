@@ -1,0 +1,19 @@
+{
+  "name": "whotrades/formatter",
+  "type": "library",
+  "author": "Anton Gorlanov (antonxacc@gmail.com)",
+  "description": "Universal formatter",
+  "autoload": {
+    "psr-4": {
+      "whotrades\\formatter\\": ""
+    }
+  },
+  "require": {
+    "php": ">=7.0",
+    "symfony/yaml": "^4.0",
+    "symfony/console": "^4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.3.0"
+  }
+}
