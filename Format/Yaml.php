@@ -4,7 +4,9 @@
  */
 namespace whotrades\formatter\Format;
 
-class Json extends Base
+use Symfony\Component\Yaml\Yaml as SymfonyYaml;
+
+class Yaml extends Base
 {
     /**
      * @param string $data
@@ -12,11 +14,15 @@ class Json extends Base
      */
     protected function parse($data, $forceFormat = null)
     {
-        $jsonDecodedResponse = json_decode($data, true);
-        if ($jsonDecodedResponse !== null) {
-            $this->asArray = $jsonDecodedResponse;
+        if (!$forceFormat && !preg_match('/\n/', $data, $matches)) {
+            $this->errorList[] = 'For parsing one line yaml use option forceFormat';
         } else {
-            $this->errorList[] = json_last_error_msg();
+            try {
+                $yamlDecodedResponse = SymfonyYaml::parse($data);
+                $this->asArray = $yamlDecodedResponse;
+            } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
+                $this->errorList[] = $e->getMessage();
+            }
         }
     }
 
@@ -37,6 +43,6 @@ class Json extends Base
      */
     public function getFormatName()
     {
-        return self::DATA_FORMAT_JSON;
+        return self::DATA_FORMAT_YAML;
     }
 }

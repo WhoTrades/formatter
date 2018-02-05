@@ -15,8 +15,9 @@ class Xml extends Base
 
     /**
      * @param string $data
+     * @param bool | null $forceFormat
      */
-    protected function parse($data)
+    protected function parse($data, $forceFormat = null)
     {
         $this->rawData = $data;
 

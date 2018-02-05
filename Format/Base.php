@@ -12,6 +12,7 @@ abstract class Base
 
     const DATA_FORMAT_XML = 'xml';
     const DATA_FORMAT_JSON = 'json';
+    const DATA_FORMAT_YAML = 'yaml';
     const DATA_FORMAT_UNSUPPORTED = 'unsupported';
 
     protected $rawData;
@@ -21,10 +22,11 @@ abstract class Base
 
     /**
      * @param string $data
+     * @param bool | null $forceFormat
      */
-    public function __construct($data)
+    public function __construct($data, $forceFormat = null)
     {
-        $this->parse($data);
+        $this->parse($data, $forceFormat);
 
         return $this;
     }
@@ -107,8 +109,9 @@ abstract class Base
 
     /**
      * @param string $data
+     * @param bool | null $forceFormat
      *
      * @return void
      */
-    abstract protected function parse($data);
+    abstract protected function parse($data, $forceFormat = null);
 }
