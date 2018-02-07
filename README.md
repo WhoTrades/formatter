@@ -7,7 +7,7 @@ Example:
 Get particular format class instance
 
 ```
-$format = \WtUtils\Data\Formatter::factory('{
+$format = \whotrades\formatter\Formatter::factory('{
 	"root": {
 		"node1": ["text1", "text2"],
 		"node2": "text3",

@@ -69,10 +69,11 @@ abstract class Base
 
     /**
      * @param array $xPathList
+     * @param bool | null $asArray
      *
      * @return array[string]
      */
-    public function getValueListByXPathList(array $xPathList)
+    public function getValueListByXPathList(array $xPathList, $asArray = null)
     {
         $result = [];
 
@@ -80,11 +81,17 @@ abstract class Base
 
         foreach ($xPathList as $xPathQuery) {
             foreach ($domXPath->query($xPathQuery) as $resultNode) {
-                if ($resultNode->childNodes->length > 1) {
-                    // ag: Convert data constructions into JSON string
-                    $result[] = json_encode(Converter::dom2array($resultNode));
+                if ($asArray) {
+                    foreach (Converter::dom2array($resultNode) as $resultSubNodeArray) {
+                        $result[] = $resultSubNodeArray;
+                    }
                 } else {
-                    $result[] = (string) $resultNode->nodeValue;
+                    if ($resultNode->childNodes->length > 1) {
+                        // ag: Convert data constructions into JSON string
+                        $result[] = json_encode(Converter::dom2array($resultNode));
+                    } else {
+                        $result[] = (string) $resultNode->nodeValue;
+                    }
                 }
             };
         }
@@ -94,12 +101,13 @@ abstract class Base
 
     /**
      * @param array $xPathList
+     * @param bool | null $asArray
      *
      * @return string | null
      */
-    public function getValueFirstByXPathList(array $xPathList)
+    public function getValueFirstByXPathList(array $xPathList, $asArray = null)
     {
-        return $this->getValueListByXPathList($xPathList)[0] ?? null;
+        return $this->getValueListByXPathList($xPathList, $asArray)[0] ?? null;
     }
 
     /**
